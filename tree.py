@@ -1,12 +1,12 @@
 class Tree :
 
-    def __init__(self, value:any, childs = []) :
+    def __init__(self, value:any) :
         self.value = value
-        self.child_branchs:list[Tree] = childs
+        self.child_branchs:list[Tree] = []
     
     def add_child(self, value:any) :
         """Add a child to the current tree"""
-        new_child_branch = Tree(value, [])
+        new_child_branch = Tree(value)
         self.child_branchs.append(new_child_branch)
 
     def is_leaf(self) -> bool :
@@ -23,7 +23,6 @@ class Tree :
     
     def get_depth(self) -> int :
         """Return the count of childs in the current tree"""
-        
         if self.is_leaf() :
             return 1
         
@@ -46,17 +45,17 @@ class Tree :
         """Return the childs with their values by using the width browse method"""
         list_of_branchs = []
         
-        stack_branch = [self]
-        while len(stack_branch) != 0 :
-            current_branch = stack_branch.pop(0)
+        waiting_queue_branch = [self]
+        while len(waiting_queue_branch) != 0 :
+            current_branch = waiting_queue_branch.pop(0)
             list_of_branchs.append(current_branch.value)
             for branch in current_branch.child_branchs :
-                stack_branch.append(branch)
+                waiting_queue_branch.append(branch)
 
         return list_of_branchs
         
 
-root_tree = Tree(0, [])
+root_tree = Tree(0)
 root_tree.add_child(1)
 root_tree.add_child(2)
 count = 3
