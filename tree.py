@@ -13,12 +13,13 @@ class Tree :
         """Whether the current tree has childs branchs or not"""
         return not self.child_branchs
     
-    def find_leaf(self) :
+    def tree_depth(self, depth_counter) -> int:
         """Return the first lead founded"""
         if self.is_leaf() :
-            return self.child_branchs[0]
+            return depth_counter
         else :
-            return self.child_branchs[0].find_depth()
+            depth_counter += 1
+            return self.child_branchs[0].tree_depth(depth_counter)
     
     def find_depth(self) -> int :
         """Return the count of childs in the current tree"""
@@ -26,7 +27,7 @@ class Tree :
     
     def browse_depth(self, list_of_branchs:list = []) -> list :
         """Return the childs with their values by using the depth browse method"""
-        print(f"{self.value} is {'a leaf' if self.is_leaf() else 'not a leaf'}")
+        #print(f"{self.value} is {'a leaf' if self.is_leaf() else 'not a leaf'}")
         
         if not self.is_leaf() :
             for branch in self.child_branchs :
@@ -38,7 +39,17 @@ class Tree :
 
     def browse_width(self) -> list :
         """Return the childs with their values by using the width browse method"""
+        list_of_branchs = []
+        
+        stack_branch = [self]
+        while len(stack_branch) != 0 :
+            current_branch = stack_branch.pop(0)
+            list_of_branchs.append(current_branch.value)
+            for branch in current_branch.child_branchs :
+                stack_branch.append(branch)
 
+        return list_of_branchs
+        
 
 root_tree = Tree(0, [])
 root_tree.add_child(1)
@@ -61,4 +72,5 @@ for branch in root_tree.child_branchs :
         elt.add_child(count)
         count += 1
 
-print(root_tree.browse_depth())
+print(f"Depth browse : {root_tree.browse_depth()}")
+print(f"Width browse : {root_tree.browse_width()}")
