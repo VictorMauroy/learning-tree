@@ -1,10 +1,10 @@
 class Tree :
 
-    def __init__(self, value, childs = []) :
+    def __init__(self, value:any, childs = []) :
         self.value = value
         self.child_branchs:list[Tree] = childs
     
-    def add_child(self, value) :
+    def add_child(self, value:any) :
         """Add a child to the current tree"""
         new_child_branch = Tree(value, [])
         self.child_branchs.append(new_child_branch)
@@ -14,16 +14,21 @@ class Tree :
         return not self.child_branchs
     
     def tree_depth(self, depth_counter) -> int:
-        """Return the first lead founded"""
+        """Return the first leaf founded"""
         if self.is_leaf() :
             return depth_counter
         else :
             depth_counter += 1
             return self.child_branchs[0].tree_depth(depth_counter)
     
-    def find_depth(self) -> int :
+    def get_depth(self) -> int :
         """Return the count of childs in the current tree"""
-        return len(self.child_branchs)
+        
+        if self.is_leaf() :
+            return 1
+        
+        depth_list = [childBranch.get_depth() for childBranch in self.child_branchs]
+        return max(depth_list) + 1
     
     def browse_depth(self, list_of_branchs:list = []) -> list :
         """Return the childs with their values by using the depth browse method"""
@@ -74,3 +79,5 @@ for branch in root_tree.child_branchs :
 
 print(f"Depth browse : {root_tree.browse_depth()}")
 print(f"Width browse : {root_tree.browse_width()}")
+
+print(f"Depth of tree is : {root_tree.get_depth()}")
